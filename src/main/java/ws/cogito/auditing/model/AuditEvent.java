@@ -1,19 +1,25 @@
 package ws.cogito.auditing.model;
 
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import java.io.Serializable;
+import java.net.URL;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
 
 /**
  * Application audit event information
  * @author jeremydeane
  */
-@XStreamAlias("audit-event")
-@JsonIgnoreProperties({ "auditEventKey" })
-public final class AuditEvent {
+@JsonIgnoreProperties({ "auditEventKey", "AuditEventLocation" })
+@JacksonXmlRootElement (localName="audit-event" )
+public final class AuditEvent implements Comparable<AuditEvent>, Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private final String application;
 	private final String time;	
 	private final String message;
@@ -45,10 +51,44 @@ public final class AuditEvent {
 	public String getTime() {
 		return time;
 	}
+	
+	public URL getAuditEventLocation(String host, int port, String context) throws Exception {
+		
+		StringBuffer uri = new StringBuffer ("http://");
+		uri.append(host);
+		uri.append(":");
+		uri.append(port);
+		uri.append("/");
+		uri.append(context);
+		uri.append("/audit/event/");
+		uri.append(getAuditEventKey());
+		
+		return new URL(uri.toString());
+	}
 
 	@Override
 	public String toString() {
 		
 		return application + "-" + time + "-" + message;
 	}
+	
+	@Override
+	public int compareTo(AuditEvent that) {
+		return ComparisonChain.start()
+				.compare(this.application, that.application)
+				.compare(this.time, that.time, Ordering.natural())
+				.compare(this.message, that.message)
+				.result();
+	}	
+
+	@Override
+	public boolean equals(Object obj) {
+		AuditEvent that = (AuditEvent) obj;
+		return Objects.equal(this.hashCode(), that.hashCode());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(application + time + message);
+	}	
 }

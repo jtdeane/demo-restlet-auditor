@@ -1,12 +1,12 @@
 package ws.cogito.auditing.service;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ws.cogito.auditing.model.AuditEvent;
-import ws.cogito.auditing.model.AuditEventURL;
 import ws.cogito.auditing.model.AuditEvents;
 
 /**
@@ -66,21 +66,21 @@ public final class AuditingServices {
 	 * @param port
 	 * @param context
 	 * @return AuditEvents
+	 * @throws Exception
 	 */
-	public static AuditEvents retrieveAuditEvents (String application, String host, 
-			int port, String context) {
+	public static AuditEvents retrieveAuditEvents (String application, 
+			String host, int port, String context) throws Exception {
 		
-		List<AuditEventURL> auditEvents = new ArrayList<AuditEventURL>();
+		List<URL> auditEventLocations = new ArrayList<URL>();
 		
 		for (Map.Entry<String,AuditEvent> entry : audits.entrySet()) {
 		    
 		    if (entry.getKey().contains(application)) {
 		    	
-		    	auditEvents.add(new AuditEventURL(host, port, context, 
-		    			entry.getKey()));
+		    	auditEventLocations.add (entry.getValue().getAuditEventLocation(host, port, context));
 		    }	    
 		}
 		
-		return new AuditEvents (application, auditEvents);
+		return new AuditEvents (application, auditEventLocations);
 	}
 }

@@ -10,8 +10,9 @@ import org.restlet.resource.ServerResource;
 
 import ws.cogito.auditing.model.AuditEvents;
 import ws.cogito.auditing.service.AuditingServices;
-import ws.cogito.auditing.service.JSONTransreptor;
-import ws.cogito.auditing.service.XMLTransreptor;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
  * Resource provider for Audit Events Resource providing ability to 
@@ -20,6 +21,9 @@ import ws.cogito.auditing.service.XMLTransreptor;
  *
  */
 public class AuditEventsResource extends ServerResource {
+	
+	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final XmlMapper xmlMapper = new XmlMapper();
 	
 	/**
 	 * Returns a list of audit events for a given application
@@ -49,7 +53,7 @@ public class AuditEventsResource extends ServerResource {
 
 		if (acceptHeader.contains("application/json")) {
 			
-			String json = JSONTransreptor.toJSON(auditEvents);
+			String json = objectMapper.writeValueAsString(auditEvents);
 			
 			stringRepresentation = new StringRepresentation(json,
 					MediaType.APPLICATION_JSON);
@@ -59,7 +63,7 @@ public class AuditEventsResource extends ServerResource {
 		} else {
 			
 			//convert to XML representation
-			String xml = XMLTransreptor.toXML(auditEvents);
+			String xml = xmlMapper.writeValueAsString(auditEvents);
 			
 			stringRepresentation = new StringRepresentation(xml,
 					MediaType.APPLICATION_JSON);

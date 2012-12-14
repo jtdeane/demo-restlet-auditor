@@ -16,8 +16,9 @@ import org.restlet.resource.ServerResource;
 
 import ws.cogito.auditing.model.AuditEvent;
 import ws.cogito.auditing.service.AuditingServices;
-import ws.cogito.auditing.service.JSONTransreptor;
-import ws.cogito.auditing.service.XMLTransreptor;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
  * Resource Provider for Audit Events providing ability to Create, Retrieve,
@@ -25,6 +26,9 @@ import ws.cogito.auditing.service.XMLTransreptor;
  * @author jeremydeane
  */
 public class AuditEventResource extends ServerResource {
+	
+	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final XmlMapper xmlMapper = new XmlMapper();
 	
 	/**
 	 * Returns an audit event
@@ -60,7 +64,7 @@ public class AuditEventResource extends ServerResource {
 
 		if (acceptHeader.contains("application/json")) {
 			
-			String json = JSONTransreptor.toJSON(auditEvent);
+			String json = objectMapper.writeValueAsString(auditEvent);
 			
 			stringRepresentation = new StringRepresentation(json,
 					MediaType.APPLICATION_JSON);
@@ -70,7 +74,7 @@ public class AuditEventResource extends ServerResource {
 		} else {
 			
 			//convert to XML representation
-			String xml = XMLTransreptor.toXML(auditEvent);
+			String xml = xmlMapper.writeValueAsString(auditEvent);
 			
 			stringRepresentation = new StringRepresentation(xml,
 					MediaType.APPLICATION_JSON);
@@ -186,13 +190,13 @@ public class AuditEventResource extends ServerResource {
 		
         if (entityType.equals(MediaType.APPLICATION_JSON)) {
         	
-        	auditEvent = (AuditEvent) JSONTransreptor.toPOJO
+        	auditEvent = (AuditEvent) objectMapper.readValue
         			(entityText, AuditEvent.class);
 
         } else {
         	
-        	auditEvent = (AuditEvent) XMLTransreptor.toPOJO
-        			(entityText);
+        	auditEvent = (AuditEvent) xmlMapper.readValue
+        			(entityText, AuditEvent.class);
 		}
         
         return auditEvent;

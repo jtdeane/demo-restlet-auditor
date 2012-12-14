@@ -1,25 +1,26 @@
 package ws.cogito.auditing.model;
 
+import java.net.URL;
 import java.util.List;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
  * A set of audit events specific to an application
  * @author jeremydeane
  */
-@XStreamAlias("audit-events")
 public final class AuditEvents {
 
-	@XStreamAsAttribute
+	@JacksonXmlProperty(isAttribute=true)
 	private final String application;
 	
-	@XStreamImplicit
-	private final List<AuditEventURL> events;
+	@JsonProperty("event")
+	@JacksonXmlElementWrapper(localName = "events")
+	private final List<URL> events;
 	
-	public AuditEvents (String application, List<AuditEventURL> events) {
+	public AuditEvents (String application, List<URL> events) {
 		this.application = application;
 		this.events = events;
 	}
@@ -28,7 +29,7 @@ public final class AuditEvents {
 		return application;
 	}
 
-	public List<AuditEventURL> getEvents() {
+	public List<URL> getEvents() {
 		return events;
 	}
 
@@ -38,8 +39,8 @@ public final class AuditEvents {
 		StringBuffer output = new StringBuffer (application);
 		output.append(" Application Events: \n");
 		
-		for (AuditEventURL auditEventURL : events) {
-			output.append(auditEventURL);
+		for (URL auditEventLocation : events) {
+			output.append(auditEventLocation);
 			output.append("\n");
 		}
 		
