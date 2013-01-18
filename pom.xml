@@ -16,7 +16,7 @@
 	<artifactId>restlet-auditor</artifactId>
 	<name>Restlet Auditor</name>
 	<packaging>war</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	
 	<properties>
 		<java-version>1.6</java-version>
@@ -120,29 +120,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.3</version>
-                <executions>
-                    <execution>
-                        <id>install</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>sources</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>                
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>            			
+            </plugin>           			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -240,47 +218,52 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>2.4.3</version>
             </plugin>
-            
-            <!-- ============Generate the documentation site for your project.============ -->
-            <!-- ============mvn site:site, mvn site:deploy============ -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>2.0.1</version>
-            </plugin>
 
-            <!-- ============Generates documentation for the Java code in the project using the standard Javadoc tool.============ -->
-            <!-- ============Runs with mvn site command============ -->
-            <!-- ============Explicit usage mvn javadoc============ -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.8</version>
-                <configuration>
-                    <linksource>true</linksource>
-                </configuration>
-            </plugin>
-            
-            <!-- ============Generate reports information about the project.============ -->
-            <!-- ============Runs with mvn site command============ -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.1.2</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>index</report>
-                            <report>summary</report>
-                            <report>dependencies</report>
-                            <report>project-team</report>
-                            <report>mailing-list</report>
-                            <report>license</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
+	        <!-- ============Generate the documentation site for your project.============ -->
+	        <!-- ============mvn site:site, mvn site:deploy============ -->
+	        <plugin>
+	        	<groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-site-plugin</artifactId>
+	            <version>3.2</version>
+	            <configuration>
+	            	<reportPlugins>
+	            		<plugin>
+	                		<groupId>org.apache.maven.plugins</groupId>
+	                    	<artifactId>maven-project-info-reports-plugin</artifactId>
+	                    	<version>2.4</version>
+	                      	<configuration>
+	                        	<dependencyDetailsEnabled>true</dependencyDetailsEnabled>
+	                        	<dependencyLocationsEnabled>true</dependencyLocationsEnabled>
+	                      	</configuration>
+	                      	<!-- simpler configuration without reportSets available for usual cases -->
+	                      	<reports>
+	                        	<report>summary</report>
+	                            <report>modules</report>
+	                            <report>dependencies</report>
+	                            <report>scm</report>
+	                            <report>issue-tracking</report>
+	                            <report>project-team</report>
+	                      </reports>
+	                    </plugin>
+	                  </reportPlugins>
+	            </configuration>             
+	        </plugin>
+
+			<!-- ============Generates documentation for the Java code in the project 
+			using the standard Javadoc tool.============ -->
+			<!-- ============Runs with mvn site command============ -->
+			<!-- ============Explicit usage mvn javadoc============ -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<linksource>true</linksource>
+				</configuration>
+			</plugin>
+				
+		</plugins>
+			
     </reporting>
     
     <!-- ============================Developers============================= -->

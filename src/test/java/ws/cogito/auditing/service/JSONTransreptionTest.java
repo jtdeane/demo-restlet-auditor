@@ -1,6 +1,7 @@
 package ws.cogito.auditing.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class JSONTransreptionTest {
 		
 		String auditEventsJSON = objectMapper.writeValueAsString(auditEvents);
 		
-		System.out.println(auditEventsJSON);
+		assertTrue(auditEventsJSON.contains("{\"application\":\"Claims\",\"event\":"));
 	}
 	
 	@Test
