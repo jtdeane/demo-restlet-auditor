@@ -43,8 +43,8 @@ public class XMLTransreptionTest {
 		
 		List<URL> auditEventLocations = new ArrayList<URL>();
 		
-		auditEventLocations.add (auditEvent.getAuditEventLocation("localhost",8080, "restlet-auditor"));
-		auditEventLocations.add (auditEvent2.getAuditEventLocation("localhost",8080, "restlet-auditor"));
+		auditEventLocations.add (auditEvent.getAuditEventLocation("localhost",8080, "/restlet-auditor"));
+		auditEventLocations.add (auditEvent2.getAuditEventLocation("localhost",8080, "/restlet-auditor"));
 		
 		AuditEvents auditEvents = new AuditEvents ("Claims", auditEventLocations);
 		

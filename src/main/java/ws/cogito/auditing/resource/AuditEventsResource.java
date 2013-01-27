@@ -48,7 +48,7 @@ public class AuditEventsResource extends ServerResource {
 		Form requestHeaders = (Form) getRequest().getAttributes().get
 				("org.restlet.http.headers");  
 		
-		String acceptHeader = requestHeaders.getFirstValue("accept");
+		String acceptHeader = requestHeaders.getFirstValue("Accept");
 		
 
 		if (acceptHeader.contains("application/json")) {
