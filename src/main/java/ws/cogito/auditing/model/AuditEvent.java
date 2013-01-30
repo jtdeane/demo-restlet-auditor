@@ -3,10 +3,14 @@ package ws.cogito.auditing.model;
 import java.io.Serializable;
 import java.net.URL;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
@@ -16,12 +20,19 @@ import com.google.common.collect.Ordering;
  * @author jeremydeane
  */
 @JsonIgnoreProperties({ "auditEventKey", "AuditEventLocation" })
-@JacksonXmlRootElement (localName="audit-event" )
+@XmlRootElement(name="audit-event")
+@XmlAccessorType(XmlAccessType.NONE)
 public final class AuditEvent implements Comparable<AuditEvent>, Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
+	@XmlElement
 	private final String application;
+	
+	@XmlElement
 	private final String time;	
+	
+	@XmlElement
 	private final String message;
 	
 	@JsonCreator
@@ -31,6 +42,14 @@ public final class AuditEvent implements Comparable<AuditEvent>, Serializable {
 		this.time=time;
 		this.message=message;
 	}
+	
+	/**
+	 * Do not use - No-arg required by JAXB
+	 */
+    @SuppressWarnings("unused")
+	private AuditEvent() throws Exception{
+	    this (null, null, null);
+	}	
 	
 	/**
 	 * Generate a unqiue key based on the applicaiton and time

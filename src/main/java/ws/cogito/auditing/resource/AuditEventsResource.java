@@ -1,5 +1,10 @@
 package ws.cogito.auditing.resource;
 
+import java.io.ByteArrayOutputStream;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -12,7 +17,6 @@ import ws.cogito.auditing.model.AuditEvents;
 import ws.cogito.auditing.service.AuditingServices;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
  * Resource provider for Audit Events Resource providing ability to 
@@ -22,8 +26,18 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  */
 public class AuditEventsResource extends ServerResource {
 	
-	private final ObjectMapper objectMapper = new ObjectMapper();
-	private final XmlMapper xmlMapper = new XmlMapper();
+	private final ObjectMapper objectMapper;
+	private final JAXBContext jaxbContext;
+	
+	/**
+	 * Default Constructor
+	 * @throws Exception
+	 */
+	public AuditEventsResource () throws Exception {
+		
+		objectMapper = new ObjectMapper();
+		jaxbContext = JAXBContext.newInstance(AuditEvents.class);
+	}	
 	
 	/**
 	 * Returns a list of audit events for a given application
@@ -63,10 +77,16 @@ public class AuditEventsResource extends ServerResource {
 		} else {
 			
 			//convert to XML representation
-			String xml = xmlMapper.writeValueAsString(auditEvents);
+			Marshaller marsheller = jaxbContext.createMarshaller();
+			
+			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+			
+			marsheller.marshal(auditEvents, outStream);
+			
+			String xml = outStream.toString();
 			
 			stringRepresentation = new StringRepresentation(xml,
-					MediaType.APPLICATION_JSON);
+					MediaType.APPLICATION_XML);
 			
 			setStatus(Status.SUCCESS_OK);
 		}

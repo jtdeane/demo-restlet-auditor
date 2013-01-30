@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Unit test the JSON Transreption
  * @author jeremydeane
  */
-
 public class JSONTransreptionTest {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
@@ -32,7 +31,7 @@ public class JSONTransreptionTest {
 		AuditEvent auditEvent = new AuditEvent
 				("Claims", "201110201650", "Bodily Injury");
 		
-		String actaulJSON = objectMapper.writeValueAsString(auditEvent);
+		String actaulJSON = objectMapper.writeValueAsString(auditEvent);	
 		
 		assertEquals(expectedJSON, actaulJSON);
 		
@@ -42,23 +41,35 @@ public class JSONTransreptionTest {
 		
 		List<URL> auditEventLocations = new ArrayList<URL>();
 		
-		auditEventLocations.add (auditEvent.getAuditEventLocation("localhost",8080, "/restlet-auditor"));
-		auditEventLocations.add (auditEvent2.getAuditEventLocation("localhost",8080, "/restlet-auditor"));
+		auditEventLocations.add (auditEvent.getAuditEventLocation("localhost",8080, "/spring-auditor"));
+		auditEventLocations.add (auditEvent2.getAuditEventLocation("localhost",8080, "/spring-auditor"));
 		
 		AuditEvents auditEvents = new AuditEvents ("Claims", auditEventLocations);
 		
-		String auditEventsJSON = objectMapper.writeValueAsString(auditEvents);
+		String auditEventsJSON = objectMapper.writeValueAsString(auditEvents);	
 		
-		assertTrue(auditEventsJSON.contains("{\"application\":\"Claims\",\"event\":"));
+		assertTrue(auditEventsJSON.contains("{\"application\":\"Claims\",\"events\":"));
 	}
 	
 	@Test
 	public void toPOJOTest() throws Exception {
 		
+		//Test AuditEvent Transreption
 		String auditEvent = "{\"message\":\"Late Payment\",\"time\":\"201210201650\",\"application\":\"Billing\"}";
 		
 		AuditEvent actualPOJO = (AuditEvent)objectMapper.readValue(auditEvent, AuditEvent.class);
 		
 		assertEquals(expectedPOJO, actualPOJO);
+		
+		//Test AuditEvents Transreption
+		StringBuffer json = new StringBuffer();
+		json.append("{\"application\":\"Claims\",\"events\":[");
+		json.append("\"http://localhost:8080/spring-auditor/audit/event/Claims-201110201650\",");
+		json.append("\"http://localhost:8080/spring-auditor/audit/event/Claims-201210201650\"");
+		json.append("]}");
+		
+		AuditEvents auditEvents = (AuditEvents)objectMapper.readValue(json.toString(), AuditEvents.class);
+		
+		assertTrue(auditEvents.getEvents().size() == 2);
 	}
 }

@@ -1,7 +1,14 @@
 package ws.cogito.auditing.resource;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.logging.Level;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.apache.commons.io.IOUtils;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -18,7 +25,6 @@ import ws.cogito.auditing.model.AuditEvent;
 import ws.cogito.auditing.service.AuditingServices;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
  * Resource Provider for Audit Events providing ability to Create, Retrieve,
@@ -27,8 +33,18 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  */
 public class AuditEventResource extends ServerResource {
 	
-	private final ObjectMapper objectMapper = new ObjectMapper();
-	private final XmlMapper xmlMapper = new XmlMapper();
+	private final ObjectMapper objectMapper;
+	private final JAXBContext jaxbContext;
+	
+	/**
+	 * Default Constructor
+	 * @throws Exception
+	 */
+	public AuditEventResource () throws Exception {
+		
+		objectMapper = new ObjectMapper();
+		jaxbContext = JAXBContext.newInstance(AuditEvent.class);
+	}
 	
 	/**
 	 * Returns an audit event
@@ -74,10 +90,16 @@ public class AuditEventResource extends ServerResource {
 		} else {
 			
 			//convert to XML representation
-			String xml = xmlMapper.writeValueAsString(auditEvent);
+			Marshaller marsheller = jaxbContext.createMarshaller();
+			
+			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+			
+			marsheller.marshal(auditEvent, outStream);
+			
+			String xml = outStream.toString();
 			
 			stringRepresentation = new StringRepresentation(xml,
-					MediaType.APPLICATION_JSON);
+					MediaType.APPLICATION_XML);
 			
 			setStatus(Status.SUCCESS_OK);
 		}
@@ -195,8 +217,12 @@ public class AuditEventResource extends ServerResource {
 
         } else {
         	
-        	auditEvent = (AuditEvent) xmlMapper.readValue
-        			(entityText, AuditEvent.class);
+    		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+    		
+    		InputStream stream = IOUtils.toInputStream (entityText);	
+
+    		//Unmarshell to Java		
+    		auditEvent  = (AuditEvent) unmarshaller.unmarshal(stream);
 		}
         
         return auditEvent;
