@@ -64,6 +64,11 @@ public class AuditEventsResource extends ServerResource {
 		
 		String acceptHeader = requestHeaders.getFirstValue("Accept");
 		
+		if (acceptHeader == null) {
+			
+			acceptHeader = requestHeaders.getFirstValue("accept");
+		}
+		
 
 		if (acceptHeader.contains("application/json")) {
 			
