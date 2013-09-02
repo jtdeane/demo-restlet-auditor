@@ -16,14 +16,14 @@
 	<artifactId>restlet-auditor</artifactId>
 	<name>Restlet Auditor</name>
 	<packaging>war</packaging>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 	
 	<properties>
 		<java-version>1.6</java-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.1.2</jackson.version>
 		<jaxb.version>2.1</jaxb.version>
-        <google-guava.version>13.0.1</google-guava.version>
+        <google-guava.version>14.0.1</google-guava.version>
 		<org.slf4j-version>1.5.10</org.slf4j-version>	
 	</properties>
 	

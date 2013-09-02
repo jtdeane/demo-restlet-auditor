@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="2.3">
+<jmeterTestPlan version="1.2" properties="2.3" jmeter="2.8 r1393162">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Web Service" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -26,6 +26,16 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="FILEDIRECTORY" elementType="Argument">
+              <stringProp name="Argument.name">FILEDIRECTORY</stringProp>
+              <stringProp name="Argument.value">${__BeanShell(import org.apache.jmeter.services.FileServer; FileServer.getFileServer().getBaseDir();)}${__BeanShell(File.separator,)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
         <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -36,7 +46,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.path">/restlet-auditor/</stringProp>
           <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
         </ConfigTestElement>
         <hashTree/>
@@ -68,8 +78,8 @@
           <stringProp name="HTTPSampler.implementation">Java</stringProp>
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
-              <elementProp name="/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-a.xml" elementType="HTTPFileArg">
-                <stringProp name="File.path">/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-a.xml</stringProp>
+              <elementProp name="${FILEDIRECTORY}/audit-event-a.xml" elementType="HTTPFileArg">
+                <stringProp name="File.path">${FILEDIRECTORY}/audit-event-a.xml</stringProp>
                 <stringProp name="File.mimetype">application/xml</stringProp>
                 <stringProp name="File.paramname"></stringProp>
               </elementProp>
@@ -78,7 +88,6 @@
           <boolProp name="HTTPSampler.image_parser">true</boolProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments">Update FileName -- was unable to use a relative path :(</stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT CREATE" enabled="true">
@@ -100,8 +109,8 @@
           <stringProp name="HTTPSampler.implementation">Java</stringProp>
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
-              <elementProp name="/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-b.xml" elementType="HTTPFileArg">
-                <stringProp name="File.path">/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-b.xml</stringProp>
+              <elementProp name="${FILEDIRECTORY}/audit-event-b.xml" elementType="HTTPFileArg">
+                <stringProp name="File.path">${FILEDIRECTORY}/audit-event-b.xml</stringProp>
                 <stringProp name="File.mimetype">application/xml</stringProp>
                 <stringProp name="File.paramname"></stringProp>
               </elementProp>
@@ -132,8 +141,8 @@
           <stringProp name="HTTPSampler.implementation">Java</stringProp>
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
-              <elementProp name="/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-a2.xml" elementType="HTTPFileArg">
-                <stringProp name="File.path">/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-a2.xml</stringProp>
+              <elementProp name="${FILEDIRECTORY}/audit-event-a2.xml" elementType="HTTPFileArg">
+                <stringProp name="File.path">${FILEDIRECTORY}/audit-event-a2.xml</stringProp>
                 <stringProp name="File.mimetype">application/xml</stringProp>
                 <stringProp name="File.paramname"></stringProp>
               </elementProp>
@@ -215,6 +224,16 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="FILEDIRECTORY" elementType="Argument">
+              <stringProp name="Argument.name">FILEDIRECTORY</stringProp>
+              <stringProp name="Argument.value">${__BeanShell(import org.apache.jmeter.services.FileServer; FileServer.getFileServer().getBaseDir();)}${__BeanShell(File.separator,)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
         <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -257,8 +276,8 @@
           <stringProp name="HTTPSampler.implementation">Java</stringProp>
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
-              <elementProp name="/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-c.json" elementType="HTTPFileArg">
-                <stringProp name="File.path">/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-c.json</stringProp>
+              <elementProp name="${FILEDIRECTORY}/audit-event-c.json" elementType="HTTPFileArg">
+                <stringProp name="File.path">${FILEDIRECTORY}/audit-event-c.json</stringProp>
                 <stringProp name="File.mimetype">application/json</stringProp>
                 <stringProp name="File.paramname"></stringProp>
               </elementProp>
@@ -289,8 +308,8 @@
           <stringProp name="HTTPSampler.implementation">Java</stringProp>
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
-              <elementProp name="/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-d.json" elementType="HTTPFileArg">
-                <stringProp name="File.path">/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-d.json</stringProp>
+              <elementProp name="${FILEDIRECTORY}/audit-event-d.json" elementType="HTTPFileArg">
+                <stringProp name="File.path">${FILEDIRECTORY}/audit-event-d.json</stringProp>
                 <stringProp name="File.mimetype">application/json</stringProp>
                 <stringProp name="File.paramname"></stringProp>
               </elementProp>
@@ -321,8 +340,8 @@
           <stringProp name="HTTPSampler.implementation">Java</stringProp>
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
-              <elementProp name="/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-e.json" elementType="HTTPFileArg">
-                <stringProp name="File.path">/Users/jeremydeane/code/source/spring/restlet-auditor/src/test/jmeter/audit-event-e.json</stringProp>
+              <elementProp name="${FILEDIRECTORY}/audit-event-e.json" elementType="HTTPFileArg">
+                <stringProp name="File.path">${FILEDIRECTORY}/audit-event-e.json</stringProp>
                 <stringProp name="File.mimetype">application/json</stringProp>
                 <stringProp name="File.paramname"></stringProp>
               </elementProp>
